@@ -88,4 +88,8 @@ public class LabelledPasswordField extends ResizeComposite {
 		});
 	}
 
+	public String getText() {
+		return this.textbox.getText();
+	}
+
 }

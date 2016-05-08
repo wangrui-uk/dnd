@@ -88,4 +88,8 @@ public class LabelledTextField extends ResizeComposite {
 		});
 	}
 
+	public String getText() {
+		return this.textbox.getText();
+	}
+
 }
