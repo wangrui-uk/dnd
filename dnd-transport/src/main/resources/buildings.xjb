@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<jxb:bindings version="1.0" xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+	schemaLocation="com/androidoven/transport/xsd/Common.xsd">
+	<jxb:globalBindings collectionType="java.util.ArrayList" underscoreBinding="asCharInWord">
+		<xjc:superClass name="com.androidoven.transport.Message" />
+	</jxb:globalBindings>
+</jxb:bindings>

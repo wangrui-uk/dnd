@@ -1,0 +1,118 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.androidoven</groupId>
+		<artifactId>dnd</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>dnd-build</artifactId>
+	<packaging>war</packaging>
+
+	<name>DND build</name>
+	<description>DND build module</description>
+	<url>http://www.androidoven.com/dnd</url>
+	<inceptionYear>${project.year}</inceptionYear>
+
+	<developers>
+		<developer>
+			<id>rwang</id>
+			<name>Rui Wang</name>
+			<organization>AndroidOven Studio</organization>
+			<organizationUrl>http://www.androidoven.com</organizationUrl>
+			<roles>
+				<role>Owner</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<organization>
+		<name>AndroidOven Studio</name>
+		<url>http://www.androidoven.com</url>
+	</organization>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.build.timestamp.format>MM/dd/yyyy hh:mm</maven.build.timestamp.format>
+		<timestamp>${maven.build.timestamp}</timestamp>
+		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.androidoven</groupId>
+			<artifactId>dnd-transport</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.androidoven</groupId>
+			<artifactId>dnd-client</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.androidoven</groupId>
+			<artifactId>dnd-server</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<!-- GWT -->
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+		</dependency>
+		<!-- RestyGWT -->
+		<dependency>
+			<groupId>org.fusesource.restygwt</groupId>
+			<artifactId>restygwt</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-servlet</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/Build.properties</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>**/Build.properties</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>gwt-maven-plugin</artifactId>
+				<configuration>
+					<hostedWebapp>${webappDirectory}</hostedWebapp>
+					<extraJvmArgs>-Xmx1524m</extraJvmArgs>
+					<extraParam>true</extraParam>
+					<localWorkers>1</localWorkers>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<webappDirectory>${webappDirectory}</webappDirectory>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

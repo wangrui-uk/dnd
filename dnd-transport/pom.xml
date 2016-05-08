@@ -1,0 +1,94 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.androidoven</groupId>
+		<artifactId>dnd</artifactId>
+		<version>${project.pom.version}</version>
+	</parent>
+	
+	<artifactId>dnd-transport</artifactId>
+	
+	<name>DND transport</name>
+	<description>DND transport module</description>
+	<url>http://www.androidoven.com/dnd</url>
+	<inceptionYear>${project.year}</inceptionYear>
+	
+	<developers>
+		<developer>
+			<id>rwang</id>
+			<name>Rui Wang</name>
+			<organization>AndroidOven Studio</organization>
+			<organizationUrl>http://www.androidoven.com</organizationUrl>
+			<roles>
+				<role>Owner</role>
+			</roles>
+		</developer>
+	</developers>
+	
+	<organization>
+		<name>AndroidOven Studio</name>
+		<url>http://www.androidoven.com</url>
+	</organization>
+	
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<!-- <resource>
+				<directory>src/main/generated</directory>
+			</resource> -->
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+			</plugin>
+			<!-- <plugin>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-wadl2java-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>wadl-2-java-generate-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>wadl2java</goal>
+						</goals>
+						<configuration>
+							<sourceRoot>src/main/generated</sourceRoot>
+							<wadlOptions>
+								<wadlOption>
+									<wadl>wadl file</wadl>
+									<impl>false</impl>
+									<bindingFiles>
+										<bindingFile>file</bindingFile>
+									</bindingFiles>
+									<extraargs>
+										<extraarg>-verbose</extraarg>
+									</extraargs>
+								</wadlOption>
+							</wadlOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin> -->
+		</plugins>
+	</build>
+	
+</project>

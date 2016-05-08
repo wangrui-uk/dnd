@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<application xmlns="http://wadl.dev.java.net/2009/02"
+	xmlns:cs="http://www.xsd.transport.sysmon.alaric.ncr.com/CommandService">
+
+	<grammars>
+		<include href="../xsd/CommandService.xsd" />
+	</grammars>
+
+	<resources base="http://localhost:8080/alaric-system-monitor/api">
+		<resource id="com.ncr.alaric.sysmon.transport.wadl.CommandResource">
+			<resource path="/CommandList">
+				<method id="getCommand" name="POST">
+					<request>
+						<representation mediaType="application/json"
+							element="cs:CommandListRequest" />
+					</request>
+					<response>
+						<representation mediaType="application/json"
+							element="cs:CommandListResponse" />
+					</response>
+				</method>
+			</resource>
+			<resource path="/Command">
+				<method id="getCommand" name="POST">
+					<request>
+						<representation mediaType="application/json"
+							element="cs:CommandRequest" />
+					</request>
+					<response>
+						<representation mediaType="application/json"
+							element="cs:CommandResponse" />
+					</response>
+				</method>
+			</resource>
+		</resource>
+	</resources>
+
+</application>

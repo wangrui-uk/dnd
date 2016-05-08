@@ -1,0 +1,143 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.base {
+			background-color: white;
+			-webkit-border-radius: 5px;
+			-moz-border-radius: 5px;
+			border-radius: 5px;
+		}
+		.cook_bg {
+			cursor: pointer;
+			background-color: rgb(235, 206, 187);
+			-webkit-border-radius: 5px;
+			-moz-border-radius: 5px;
+			border-radius: 5px;
+			overflow: hidden;
+			-webkit-box-shadow: 0px 15px 30px -5px rgba(150,150,150,0.75);
+			-moz-box-shadow: 0px 15px 30px -5px rgba(150,150,150,0.75);
+			box-shadow: 0px 15px 30px -5px rgba(150,150,150,0.75);
+		}
+		.bar {
+			background-color: rgb(200, 200, 200);
+		}
+		.cookname {
+			text-align: center;
+			font-family: 'Lato', Arial;
+			font-size: 24px;
+			line-height: 50px;
+			cursor: pointer;
+			color: rgb(110, 43, 77);
+		}
+		.like_icon {
+			outline: none;
+			border: none;
+			background: none;
+			height: 50px;
+			line-height: 50px;
+			text-align: center;
+			font-family: "FontAwesome";
+			font-size: 24px;
+			overflow: hidden;
+			white-space: nowrap;
+			cursor: pointer;
+			color: rgba(80, 80, 80);
+		}
+		.like_icon:HOVER {
+			color: rgb(235, 206, 187);
+		}
+		.cook_icon {
+			outline: none;
+			border: none;
+			height: 200px;
+			line-height: 200px;
+			text-align: center;
+			font-family: "FontAwesome";
+			font-size: 156px;
+			overflow: hidden;
+			white-space: nowrap;
+			color: rgb(235, 206, 187);
+			background-color: white;
+			-webkit-border-radius: 200px;
+			-moz-border-radius: 200px;
+			border-radius: 200px;
+		}
+		.foodname {
+			text-align: left;
+			font-family: 'Lato', Arial;
+			font-size: 24px;
+			line-height: 100px;
+			color: rgb(120, 120, 120);
+		}
+		.pricename {
+			text-align: right;
+			font-family: 'Lato', Arial;
+			font-size: 32px;
+			line-height: 100px;
+			color: rgb(235, 206, 187);
+		}
+	</ui:style>
+	<g:LayoutPanel ui:field="frame">
+		<g:layer left="0px" right="0px" top="100px" bottom="0px">
+			<g:LayoutPanel ui:field="cookContentBase" styleName="{style.base}">
+			</g:LayoutPanel>
+		</g:layer>
+		<g:layer left="50px" right="50px" top="280px" height="50px">
+			<g:Button ui:field="likeButton" styleName="{style.like_icon}" width="100%"/>
+		</g:layer>
+		<g:layer left="10px" right="10px" top="80px" height="300px">
+			<g:LayoutPanel ui:field="cookHeader" styleName="{style.cook_bg}" height="250px">
+				<g:layer left="25px" width="200px" top="25px" height="200px">
+					<g:Label styleName="{style.cook_icon}" ui:field="cookIcon"/>
+				</g:layer>
+				<g:layer left="0px" right="0px" top="0px" bottom="0px">
+					<g:Image ui:field="cookImg"/>
+				</g:layer>
+			</g:LayoutPanel>
+		</g:layer>
+		<g:layer left="50px" right="50px" top="330px" height="1px">
+			<g:SimplePanel styleName="{style.bar}" />
+		</g:layer>
+		<g:layer left="0px" right="0px" top="330px" bottom="50px">
+			<g:LayoutPanel>
+				<g:layer left="20px" right="20px" top="0px" height="100px">
+					<g:Label text="Chicken Curry" styleName="{style.foodname}"/>
+				</g:layer>
+				<g:layer left="20px" right="20px" top="0px" height="100px">
+					<g:Label text="£8" styleName="{style.pricename}"/>
+				</g:layer>
+				<g:layer left="20px" right="20px" top="100px" height="100px">
+					<g:Label text="Beef Curry" styleName="{style.foodname}"/>
+				</g:layer>
+				<g:layer left="20px" right="20px" top="100px" height="100px">
+					<g:Label text="£8" styleName="{style.pricename}"/>
+				</g:layer>
+				<g:layer left="20px" right="20px" top="200px" height="100px">
+					<g:Label text="Prawn Curry" styleName="{style.foodname}"/>
+				</g:layer>
+				<g:layer left="20px" right="20px" top="200px" height="100px">
+					<g:Label text="£10" styleName="{style.pricename}"/>
+				</g:layer>
+				<g:layer left="20px" right="20px" top="300px" height="100px">
+					<g:Label text="Vegitable Curry" styleName="{style.foodname}"/>
+				</g:layer>
+				<g:layer left="20px" right="20px" top="300px" height="100px">
+					<g:Label text="£6" styleName="{style.pricename}"/>
+				</g:layer>
+				<g:layer left="20px" right="20px" top="400px" height="100px">
+					<g:Label text="Tofu Curry" styleName="{style.foodname}"/>
+				</g:layer>
+				<g:layer left="20px" right="20px" top="400px" height="100px">
+					<g:Label text="£8" styleName="{style.pricename}"/>
+				</g:layer>
+			</g:LayoutPanel>
+		</g:layer>
+		<g:layer left="0px" right="0px" bottom="50px" height="1px">
+			<g:SimplePanel styleName="{style.bar}" />
+		</g:layer>
+		<g:layer left="0px" right="0px" bottom="0px" height="50px">
+			<g:Label ui:field="cookname" styleName="{style.cookname}"/>
+		</g:layer>
+	</g:LayoutPanel>
+</ui:UiBinder>
