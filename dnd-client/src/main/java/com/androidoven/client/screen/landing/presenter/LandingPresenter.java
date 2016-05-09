@@ -8,7 +8,7 @@ public interface LandingPresenter extends Presenter<LandingView> {
 
 	void onSigninCustomer(String user, String password);
 
-	void onUpdateCustomerFavourite(Customer customer);
+	void onUpdateCustomerFavourite(Customer customer, String cookId, boolean add);
 
 	void onSigninCook(String user, String password);
 

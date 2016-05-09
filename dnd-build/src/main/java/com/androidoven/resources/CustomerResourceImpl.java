@@ -2,12 +2,14 @@ package com.androidoven.resources;
 
 import javax.ws.rs.Path;
 
+import com.androidoven.server.model.CookPojo;
 import com.androidoven.server.model.CooksListViewPojo;
 import com.androidoven.server.model.CustomerPojo;
 import com.androidoven.transport.wadl.CustomerResource;
 import com.androidoven.transport.xsd.common.Customer;
 import com.androidoven.transport.xsd.customerservice.CooksListView;
 import com.androidoven.transport.xsd.customerservice.CooksListViewWithCustomer;
+import com.androidoven.transport.xsd.customerservice.CustomerUpdate;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -46,19 +48,20 @@ public class CustomerResourceImpl implements CustomerResource {
 	@ApiOperation(value="Update customer information", notes="Returned cook list can be modified", response=CooksListViewWithCustomer.class)
 	@ApiResponses(value={@ApiResponse(code=200, message="Update customer information", response=CooksListViewWithCustomer.class)})
 	@Override
-	public CooksListViewWithCustomer updateCustomer(Customer customer) {
+	public CooksListViewWithCustomer updateCustomer(CustomerUpdate customerUpdate) {
 		CooksListViewWithCustomer clvwc = new CooksListViewWithCustomer();
-		if (CustomerPojo.getInstance().verifyCustomer(customer)) {
+		if (CustomerPojo.getInstance().verifyCustomer(customerUpdate.getCustomer())) {
 			CustomerPojo.getInstance().getCustomer().getFavouriteCooksList().clear();
-			CustomerPojo.getInstance().getCustomer().getFavouriteCooksList().addAll(customer.getFavouriteCooksList());
-			clvwc.setCustomer(customer);
+			CustomerPojo.getInstance().getCustomer().getFavouriteCooksList().addAll(customerUpdate.getCustomer().getFavouriteCooksList());
+			clvwc.setCustomer(customerUpdate.getCustomer());
 			clvwc.getList().addAll(CooksListViewPojo.getInstance().getCooksListView().getList());
+			CookPojo.getInstance().updateCook(customerUpdate.getCookId(), customerUpdate.isAdd());
 		}else{
-			customer.setId(null);
-			customer.setName(null);
-			customer.setPassword(null);
+			customerUpdate.getCustomer().setId(null);
+			customerUpdate.getCustomer().setName(null);
+			customerUpdate.getCustomer().setPassword(null);
 		}
-		clvwc.setCustomer(customer);
+		clvwc.setCustomer(customerUpdate.getCustomer());
 		return clvwc;
 	}
 

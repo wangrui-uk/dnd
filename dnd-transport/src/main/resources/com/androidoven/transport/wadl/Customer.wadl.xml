@@ -32,7 +32,7 @@
 			<resource path="/updateCustomer">
 				<method id="updateCustomer" name="POST">
 					<request>
-						<representation mediaType="application/json" element="cm:Customer"/>
+						<representation mediaType="application/json" element="cs:CustomerUpdate"/>
 					</request>
 					<response>
 						<representation mediaType="application/json" element="cs:CooksListViewWithCustomer"/>

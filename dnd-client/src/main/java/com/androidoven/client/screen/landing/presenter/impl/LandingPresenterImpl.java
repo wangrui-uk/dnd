@@ -12,6 +12,7 @@ import com.androidoven.transport.xsd.common.Cook;
 import com.androidoven.transport.xsd.common.Customer;
 import com.androidoven.transport.xsd.customerservice.CooksListView;
 import com.androidoven.transport.xsd.customerservice.CooksListViewWithCustomer;
+import com.androidoven.transport.xsd.customerservice.CustomerUpdate;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 
@@ -57,9 +58,13 @@ public class LandingPresenterImpl implements LandingPresenter {
 		});
 	}
 
-	private void customerUpdate(Customer customer) {
+	private void customerUpdate(Customer customer, String cookId, boolean add) {
 		Defaults.setServiceRoot(GWT.getHostPageBaseURL() + "api");
-		CustomerService.I.updateCustomer(customer, new MethodCallback<CooksListViewWithCustomer>() {
+		CustomerUpdate cu = new CustomerUpdate();
+		cu.setCustomer(customer);
+		cu.setCookId(cookId);
+		cu.setAdd(add);
+		CustomerService.I.updateCustomer(cu, new MethodCallback<CooksListViewWithCustomer>() {
 
 			@Override
 			public void onFailure(Method method, Throwable exception) {
@@ -112,8 +117,8 @@ public class LandingPresenterImpl implements LandingPresenter {
 	}
 
 	@Override
-	public void onUpdateCustomerFavourite(Customer customer) {
-		this.customerUpdate(customer);
+	public void onUpdateCustomerFavourite(Customer customer, String cookId, boolean add) {
+		this.customerUpdate(customer, cookId, add);
 	}
 
 	@Override

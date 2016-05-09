@@ -176,6 +176,25 @@
 			line-height: 100px;
 			color: white;
 		}
+		.cook_favourite_icon {
+			outline: none;
+			border: none;
+			background: none;
+			line-height: 50px;
+			text-align: center;
+			font-family: "FontAwesome";
+			font-size: 32px;
+			overflow: hidden;
+			white-space: nowrap;
+			color: rgb(239, 118, 75);
+		}
+		.cookNum {
+			text-align: left;
+			font-family: 'Lato', Arial;
+			font-size: 32px;
+			line-height: 50px;
+			color: white;
+		}
 	</ui:style>
 	<ui:with type="com.androidoven.client.resources.ThemeManager" field="theme" />
 	<g:LayoutPanel ui:field="frame">
@@ -210,6 +229,12 @@
 						</g:layer>
 						<g:layer left="20px" right="20px" top="20px" height="100px">
 							<g:Label ui:field="cookLabel" styleName="{style.cookName}" visible="false"/>
+						</g:layer>
+						<g:layer left="400px" width="50px" top="50px" height="50px">
+							<g:Label ui:field="cookFavouriteCount" styleName="{style.cook_favourite_icon}" visible="false"/>
+						</g:layer>
+						<g:layer left="450px" width="200px" top="50px" height="50px">
+							<g:Label ui:field="cookFavouriteNum" styleName="{style.cookNum}" text="0" visible="false"/>
 						</g:layer>
 					</g:LayoutPanel>
 				</g:layer>

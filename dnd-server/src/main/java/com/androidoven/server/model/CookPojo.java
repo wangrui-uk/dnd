@@ -64,4 +64,17 @@ public class CookPojo {
 		return null;
 	}
 
+	public void updateCook(String cookId, boolean add) {
+		for (int i=0; i<this.cooks.length; i++) {
+			if (this.cooks[i].getId().equals(cookId)) {
+				if (add) {
+					this.cooks[i].setFavouriteNum(this.cooks[i].getFavouriteNum()+1);
+				}else{
+					this.cooks[i].setFavouriteNum(this.cooks[i].getFavouriteNum()-1);
+				}
+				break;
+			}
+		}
+	}
+
 }

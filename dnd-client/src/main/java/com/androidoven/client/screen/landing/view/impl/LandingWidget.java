@@ -148,6 +148,10 @@ public class LandingWidget extends ResizeComposite
 	LayoutPanel favouriteListBase;
 	@UiField
 	Label cookLabel;
+	@UiField
+	Label cookFavouriteCount;
+	@UiField
+	Label cookFavouriteNum;
 	
 	public LandingWidget() {
 		this.initWidget(uiBinder.createAndBindUi(this));
@@ -179,12 +183,14 @@ public class LandingWidget extends ResizeComposite
 					@Override
 					public void onFavourite(CookWidget source, String id, boolean like) {
 						if (null != customer) {
+							boolean add = true;
 							if (like && !customer.getFavouriteCooksList().contains(id)) {
 								customer.getFavouriteCooksList().add(id);
 							}else if (!like && customer.getFavouriteCooksList().contains(id)) {
 								customer.getFavouriteCooksList().remove(id);
+								add = false;
 							}
-							presenter.onUpdateCustomerFavourite(customer);
+							presenter.onUpdateCustomerFavourite(customer, source.cookView.getId(), add);
 						}
 					}
 					
@@ -225,6 +231,8 @@ public class LandingWidget extends ResizeComposite
 	@Override
 	public void initial() {
 		Window.addResizeHandler(this);
+		
+		this.cookFavouriteCount.setText("\uf004");
 		
 		this.swaggerButton.setText("\uf121");
 		this.swaggerButton.addClickHandler(new ClickHandler() {
@@ -456,6 +464,9 @@ public class LandingWidget extends ResizeComposite
 				});
 				this.cookLabel.setVisible(false);
 				this.cookLabel.setText(null);
+				this.cookFavouriteCount.setVisible(false);
+				this.cookFavouriteNum.setVisible(false);
+				this.cookFavouriteNum.setText("0");
 			}
 		} else if (source.equals(this.customerSigninBut)) {
 			this.submitCustomer();
@@ -530,7 +541,7 @@ public class LandingWidget extends ResizeComposite
 					if (cw.cookView.getId() == fi.id) {
 						if (null != customer) {
 							customer.getFavouriteCooksList().remove(fi.id);
-							presenter.onUpdateCustomerFavourite(customer);
+							presenter.onUpdateCustomerFavourite(customer, cw.cookView.getId(), false);
 						}
 						break;
 					}
@@ -652,7 +663,10 @@ public class LandingWidget extends ResizeComposite
 				
 			});
 			this.cookLabel.setVisible(true);
+			this.cookFavouriteCount.setVisible(true);
+			this.cookFavouriteNum.setVisible(true);
 			this.cookLabel.setText(this.cook.getName());
+			this.cookFavouriteNum.setText(String.valueOf(this.cook.getFavouriteNum()));
 		}else{
 			this.cookAuthMsg.setVisible(true);
 			this.cookAuthMsg.setText("Oops, shall we try again?");

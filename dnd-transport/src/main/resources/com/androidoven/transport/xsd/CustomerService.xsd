@@ -22,4 +22,12 @@
 			<element name="customer" type="common:Customer" maxOccurs="1" minOccurs="1"></element>
 		</sequence>
 	</complexType>
+
+	<complexType name="CustomerUpdate">
+		<sequence>
+			<element name="customer" type="common:Customer" maxOccurs="1" minOccurs="1"></element>
+			<element name="cookId" type="string" maxOccurs="1" minOccurs="1"></element>
+			<element name="add" type="boolean" maxOccurs="1" minOccurs="1"></element>
+		</sequence>
+	</complexType>
 </schema>

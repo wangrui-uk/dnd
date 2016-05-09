@@ -12,6 +12,7 @@ import org.fusesource.restygwt.client.RestService;
 import com.androidoven.transport.xsd.common.Customer;
 import com.androidoven.transport.xsd.customerservice.CooksListView;
 import com.androidoven.transport.xsd.customerservice.CooksListViewWithCustomer;
+import com.androidoven.transport.xsd.customerservice.CustomerUpdate;
 import com.google.gwt.core.client.GWT;
 
 @Path("CustomerService")
@@ -34,6 +35,6 @@ public interface CustomerService extends RestService {
     @Consumes("application/json")
     @Produces("application/json")
     @Path("/updateCustomer")
-    void updateCustomer(Customer customer, MethodCallback<CooksListViewWithCustomer> callback);
+    void updateCustomer(CustomerUpdate customerUpdate, MethodCallback<CooksListViewWithCustomer> callback);
 
 }
