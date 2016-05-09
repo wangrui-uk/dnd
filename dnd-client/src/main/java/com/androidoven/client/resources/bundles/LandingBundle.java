@@ -15,6 +15,10 @@ public interface LandingBundle extends ClientBundle {
 	@ImageOptions(repeatStyle = RepeatStyle.None)
 	ImageResource customerImg();
 	
+	@Source(IMG_DIR + "cook_bg.jpg")
+	@ImageOptions(repeatStyle = RepeatStyle.None)
+	ImageResource cookImg();
+	
 	@Source(IMG_DIR + "cook01.jpg")
 	@ImageOptions(repeatStyle = RepeatStyle.None)
 	ImageResource cook01();

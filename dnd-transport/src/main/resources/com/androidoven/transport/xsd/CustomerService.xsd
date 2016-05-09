@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://www.xsd.transport.androidoven.com/CustomerService"
+	xmlns:common="http://www.xsd.transport.androidoven.com/Common"
+	targetNamespace="http://www.xsd.transport.androidoven.com/CustomerService"
+	elementFormDefault="qualified" attributeFormDefault="unqualified"
+	version="2.32">
+	
+	<import schemaLocation="./Common.xsd" namespace="http://www.xsd.transport.androidoven.com/Common" />
+
+	<complexType name="CooksListView">
+		<sequence>
+			<element name="list" type="common:CookView" maxOccurs="unbounded" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+	
+	<complexType name="CooksListViewWithCustomer">
+		<sequence>
+			<element name="list" type="common:CookView"
+				maxOccurs="unbounded" minOccurs="0">
+			</element>
+			<element name="customer" type="common:Customer" maxOccurs="1" minOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="CustomerUpdate">
+		<sequence>
+			<element name="customer" type="common:Customer" maxOccurs="1" minOccurs="1"></element>
+			<element name="cookId" type="string" maxOccurs="1" minOccurs="1"></element>
+			<element name="add" type="boolean" maxOccurs="1" minOccurs="1"></element>
+		</sequence>
+	</complexType>
+</schema>

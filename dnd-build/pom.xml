@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.androidoven</groupId>
 		<artifactId>dnd</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>${project.pom.version}</version>
 	</parent>
 
 	<artifactId>dnd-build</artifactId>
@@ -49,6 +49,7 @@
 			<groupId>com.androidoven</groupId>
 			<artifactId>dnd-client</artifactId>
 			<version>${project.version}</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.androidoven</groupId>
@@ -59,11 +60,19 @@
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<!-- RestyGWT -->
 		<dependency>
 			<groupId>org.fusesource.restygwt</groupId>
 			<artifactId>restygwt</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<!-- Jersey -->
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-common</artifactId>
+			<version>2.22.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.containers</groupId>
@@ -73,28 +82,26 @@
 			<groupId>org.glassfish.jersey.media</groupId>
 			<artifactId>jersey-media-json-jackson</artifactId>
 		</dependency>
+		<!-- Swagger -->
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-jersey2-jaxrs</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-				<includes>
-					<include>**/Build.properties</include>
-				</includes>
-			</resource>
-			<resource>
-				<directory>src/main/resources</directory>
-				<excludes>
-					<exclude>**/Build.properties</exclude>
-				</excludes>
-			</resource>
-		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>

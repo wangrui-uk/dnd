@@ -21,9 +21,17 @@ public class LabelledPasswordField extends ResizeComposite {
 	
 	public interface Resources extends CssResource {
 		
-		String label_color();
+		String textbox_cook();
 		
-		String label_focus_color();
+		String label_color_cook();
+		
+		String label_focus_color_cook();
+		
+		String textbox_customer();
+		
+		String label_color_customer();
+		
+		String label_focus_color_customer();
 		
 		String label_size();
 		
@@ -42,6 +50,7 @@ public class LabelledPasswordField extends ResizeComposite {
 	public PasswordTextBox textbox;
 	@UiField
 	Resources style;
+	private boolean cook = false;
 
 	public LabelledPasswordField() {
 		this.initWidget(uiBinder.createAndBindUi(this));
@@ -49,8 +58,13 @@ public class LabelledPasswordField extends ResizeComposite {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				title.removeStyleName(style.label_color());
-				title.addStyleName(style.label_focus_color());
+				if (cook) {
+					title.removeStyleName(style.label_color_cook());
+					title.addStyleName(style.label_focus_color_cook());
+				}else{
+					title.removeStyleName(style.label_color_customer());
+					title.addStyleName(style.label_focus_color_customer());
+				}
 				title.removeStyleName(style.label_size());
 				title.addStyleName(style.label_focus_size());
 				frame.setWidgetTopHeight(title, 0, Unit.PX, 30, Unit.PX);
@@ -62,8 +76,13 @@ public class LabelledPasswordField extends ResizeComposite {
 			
 			@Override
 			public void onFocus(FocusEvent event) {
-				title.removeStyleName(style.label_color());
-				title.addStyleName(style.label_focus_color());
+				if (cook) {
+					title.removeStyleName(style.label_color_cook());
+					title.addStyleName(style.label_focus_color_cook());
+				}else{
+					title.removeStyleName(style.label_color_customer());
+					title.addStyleName(style.label_focus_color_customer());
+				}
 				title.removeStyleName(style.label_size());
 				title.addStyleName(style.label_focus_size());
 				frame.setWidgetTopHeight(title, 0, Unit.PX, 30, Unit.PX);
@@ -76,16 +95,47 @@ public class LabelledPasswordField extends ResizeComposite {
 			public void onBlur(BlurEvent event) {
 				String text = textbox.getText();
 				if (null == text || "".equals(text)) {
-					title.removeStyleName(style.label_focus_color());
-					title.addStyleName(style.label_color());
+					if (cook) {
+						title.removeStyleName(style.label_focus_color_cook());
+						title.addStyleName(style.label_color_cook());
+					}else{
+						title.removeStyleName(style.label_focus_color_customer());
+						title.addStyleName(style.label_color_customer());
+					}
 					title.removeStyleName(style.label_focus_size());
 					title.addStyleName(style.label_size());
 					frame.setWidgetBottomHeight(title, 0, Unit.PX, 30, Unit.PX);
 					frame.animate(200);
-					textbox.setFocus(false);
 				}
 			}
 		});
+	}
+	
+	public void applyCookStyle() {
+		this.textbox.removeStyleName(this.style.textbox_customer());
+		this.textbox.addStyleName(this.style.textbox_cook());
+		this.title.removeStyleName(this.style.label_color_customer());
+		this.title.addStyleName(this.style.label_color_cook());
+		this.cook = true;
+	}
+
+	public String getText() {
+		return this.textbox.getText();
+	}
+
+	public void reset() {
+		this.textbox.setText(null);
+		if (cook) {
+			title.removeStyleName(style.label_focus_color_cook());
+			title.addStyleName(style.label_color_cook());
+		}else{
+			title.removeStyleName(style.label_focus_color_customer());
+			title.addStyleName(style.label_color_customer());
+		}
+		title.removeStyleName(style.label_focus_size());
+		title.addStyleName(style.label_size());
+		frame.setWidgetBottomHeight(title, 0, Unit.PX, 30, Unit.PX);
+		frame.animate(200);
 	}
 
 }

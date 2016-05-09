@@ -3,8 +3,11 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:c="urn:import:com.androidoven.client.components">
 	<ui:style>
-		.frame_bg {
+		.left_bg {
 			background-color: rgb(110, 43, 77);
+		}
+		.right_bg {
+			background-color: rgb(239, 118, 75);
 		}
 		.customer_layout {
 			top: 50% !important;
@@ -24,9 +27,9 @@
 			border-radius: 2px;
 			line-height: 32px;
 			cursor: pointer;
-			-webkit-box-shadow: 0px 2px 5px 0px rgba(159, 167, 39, 0.75);
-			-moz-box-shadow:    0px 2px 5px 0px rgba(159, 167, 39, 0.75);
-			box-shadow:         0px 2px 5px 0px rgba(159, 167, 39, 0.75);
+			-webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.75);
+			-moz-box-shadow:    0px 2px 5px 0px rgba(0, 0, 0, 0.75);
+			box-shadow:         0px 2px 5px 0px rgba(0, 0, 0, 0.75);
 			-webkit-transition: all 50ms linear;
 			   -o-transition: all 50ms linear;
 			   -moz-transition: all 50ms linear;
@@ -35,16 +38,16 @@
 			   transition: all 50ms linear;
 		}
 		.button:HOVER {
-			-webkit-box-shadow: 0px 5px 10px 0px rgba(159, 167, 39, 0.75);
-			-moz-box-shadow:    0px 5px 10px 0px rgba(159, 167, 39, 0.75);
-			box-shadow:         0px 5px 10px 0px rgba(159, 167, 39, 0.75);
+			-webkit-box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75);
+			-moz-box-shadow:    0px 5px 10px 0px rgba(0, 0, 0, 0.75);
+			box-shadow:         0px 5px 10px 0px rgba(0, 0, 0, 0.75);
 		}
 		.button:ACTIVE {
-			-webkit-box-shadow: 0px 10px 10px 0px rgba(159, 167, 39, 0.75);
-			-moz-box-shadow:    0px 10px 10px 0px rgba(159, 167, 39, 0.75);
-			box-shadow:         0px 10px 10px 0px rgba(159, 167, 39, 0.75);
+			-webkit-box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.75);
+			-moz-box-shadow:    0px 10px 10px 0px rgba(0, 0, 0, 0.75);
+			box-shadow:         0px 10px 10px 0px rgba(0, 0, 0, 0.75);
 		}
-		.text {
+		.customer_text {
 			text-align: center;
 			font-family: 'Lato', Arial;
 			font-size: 16px;
@@ -53,6 +56,17 @@
 			line-height: 40px;
 			cursor: pointer;
 			background-color: rgb(239, 118, 75);
+			color: white;
+		}
+		.cook_text {
+			text-align: center;
+			font-family: 'Lato', Arial;
+			font-size: 16px;
+			width: 150px;
+			height: 40px;
+			line-height: 40px;
+			cursor: pointer;
+			background-color: rgb(110, 43, 77);
 			color: white;
 		}
 		.padding_left {
@@ -81,9 +95,9 @@
 			height: 60px;
 			line-height: 60px;
 			cursor: pointer;
-			-webkit-box-shadow: 0px 2px 5px 0px rgba(80, 80, 80, 0.75);
-			-moz-box-shadow:    0px 2px 5px 0px rgba(80, 80, 80, 0.75);
-			box-shadow:         0px 2px 5px 0px rgba(80, 80, 80, 0.75);
+			-webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.75);
+			-moz-box-shadow:    0px 2px 5px 0px rgba(0, 0, 0, 0.75);
+			box-shadow:         0px 2px 5px 0px rgba(0, 0, 0, 0.75);
 			-webkit-transition: all 50ms linear;
 			-o-transition: all 50ms linear;
 			-moz-transition: all 50ms linear;
@@ -92,14 +106,14 @@
 			transition: all 50ms linear;
 		}
 		.switch_button:HOVER {
-			-webkit-box-shadow: 0px 5px 10px 0px rgba(80, 80, 80, 0.75);
-			-moz-box-shadow:    0px 5px 10px 0px rgba(80, 80, 80, 0.75);
-			box-shadow:         0px 5px 10px 0px rgba(80, 80, 80, 0.75);
+			-webkit-box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75);
+			-moz-box-shadow:    0px 5px 10px 0px rgba(0, 0, 0, 0.75);
+			box-shadow:         0px 5px 10px 0px rgba(0, 0, 0, 0.75);
 		}
 		.switch_button:ACTIVE {
-			-webkit-box-shadow: 0px 10px 10px 0px rgba(80, 80, 80, 0.75);
-			-moz-box-shadow:    0px 10px 10px 0px rgba(80, 80, 80, 0.75);
-			box-shadow:         0px 10px 10px 0px rgba(80, 80, 80, 0.75);
+			-webkit-box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.75);
+			-moz-box-shadow:    0px 10px 10px 0px rgba(0, 0, 0, 0.75);
+			box-shadow:         0px 10px 10px 0px rgba(0, 0, 0, 0.75);
 		}
 		.switch_text {
 			text-align: center;
@@ -109,46 +123,203 @@
 			background-color: white;
 			color: rgb(110, 43, 77);
 		}
+		.swagger_text {
+			text-align: center;
+			font-family: "FontAwesome";
+			font-size: 24px;
+			cursor: pointer;
+			background-color: rgb(39, 174, 96);
+			color: white;
+		}
+		.git_text {
+			text-align: center;
+			font-family: "FontAwesome";
+			font-size: 48px;
+			cursor: pointer;
+			background-color: rgb(142, 68, 173);
+			color: white;
+		}
+		.scrollbar {
+			background-color: rgb(110, 43, 77);
+			-webkit-border-radius: 20px;
+			-moz-border-radius: 20px;
+			border-radius: 20px;
+			cursor: pointer;
+		}
+		.authMsg {
+			text-align: center;
+			font-family: 'Lato', Arial;
+			font-size: 16px;
+			line-height: 30px;
+			color: white;
+		}
+		.favourite_icon {
+			outline: none;
+			border: none;
+			background: none;
+			line-height: 50px;
+			text-align: center;
+			font-family: "FontAwesome";
+			font-size: 32px;
+			overflow: hidden;
+			white-space: nowrap;
+			color: rgb(239, 118, 75);
+			cursor: pointer;
+		}
+		.fav_border {
+			border-left: 1px solid rgb(150, 150, 150);
+		}
+		.cookName {
+			text-align: left;
+			font-family: 'Lato', Arial;
+			font-size: 72px;
+			line-height: 100px;
+			color: white;
+		}
+		.cook_favourite_icon {
+			outline: none;
+			border: none;
+			background: none;
+			line-height: 50px;
+			text-align: center;
+			font-family: "FontAwesome";
+			font-size: 32px;
+			overflow: hidden;
+			white-space: nowrap;
+			color: rgb(239, 118, 75);
+		}
+		.cookNum {
+			text-align: left;
+			font-family: 'Lato', Arial;
+			font-size: 32px;
+			line-height: 50px;
+			color: white;
+		}
 	</ui:style>
 	<ui:with type="com.androidoven.client.resources.ThemeManager" field="theme" />
-	<g:LayoutPanel ui:field="frame" styleName="{style.frame_bg}">
+	<g:LayoutPanel ui:field="frame">
 		<g:layer left="0PX" width="50%" top="0PX" bottom="0PX">
-			<g:LayoutPanel>
-				<g:layer>
-					<g:LayoutPanel styleName="{style.customer_layout}">
-						<g:layer left="10px" right="10px" top="190px" height="60px">
-							<c:LabelledTextField ui:field="usernameField" />
+			<g:LayoutPanel ui:field="leftPanel" styleName="{style.left_bg}">
+				<g:layer left="0PX" width="100%" top="0PX" bottom="0PX">
+					<g:LayoutPanel ui:field="customerSigninPanel">
+						<g:layer>
+							<g:LayoutPanel styleName="{style.customer_layout}">
+								<g:layer left="10px" right="10px" top="190px" height="60px">
+									<c:LabelledTextField ui:field="customerUsernameField" />
+								</g:layer>
+								<g:layer left="10px" right="10px" top="250px" height="60px">
+									<c:LabelledPasswordField ui:field="customerPasswordField" />
+								</g:layer>
+								<g:layer right="-10px" width="180px" top="350px" height="60px">
+									<g:Button ui:field="customerSigninBut" styleName="{style.button} {style.customer_text}" text="SIGN IN"/>
+								</g:layer>
+								<g:layer left="0px" right="0px" top="410px" height="30px">
+									<g:Label ui:field="customerAuthMsg" text="Oops, shall we try again?" visible="false" styleName="{style.authMsg}"/>
+								</g:layer>
+							</g:LayoutPanel>
 						</g:layer>
-						<g:layer left="10px" right="10px" top="250px" height="60px">
-							<c:LabelledPasswordField ui:field="passwordField" />
+					</g:LayoutPanel>
+				</g:layer>
+				<g:layer left="-100%" width="100%" top="0PX" bottom="0PX">
+					<g:LayoutPanel ui:field="cookPanel">
+						<g:layer left="0px" right="0px" top="0px" bottom="0px">
+							<g:SimplePanel width="100%" height="100%" ui:field="cookBgPanel">
+								<g:Image resource="{theme.getLandingBundle.cookImg}" ui:field="cookBgImg"/>
+							</g:SimplePanel>
 						</g:layer>
-						<g:layer right="-10px" width="180px" top="350px" height="60px">
-							<g:Button styleName="{style.button} {style.text}" text="SIGN IN"/>
+						<g:layer left="20px" right="20px" top="20px" height="100px">
+							<g:Label ui:field="cookLabel" styleName="{style.cookName}" visible="false"/>
+						</g:layer>
+						<g:layer left="400px" width="50px" top="50px" height="50px">
+							<g:Label ui:field="cookFavouriteCount" styleName="{style.cook_favourite_icon}" visible="false"/>
+						</g:layer>
+						<g:layer left="450px" width="200px" top="50px" height="50px">
+							<g:Label ui:field="cookFavouriteNum" styleName="{style.cookNum}" text="0" visible="false"/>
+						</g:layer>
+					</g:LayoutPanel>
+				</g:layer>
+				<g:layer left="0px" width="50px" top="0px" height="50px">
+					<g:LayoutPanel ui:field="favouriteBase" visible="false">
+						<g:layer left="0px" right="0px" top="0px" bottom="0px">
+							<g:Label ui:field="favouriteIconBase" styleName="{style.favourite_icon}"/>
+						</g:layer>
+					</g:LayoutPanel>
+				</g:layer>
+				<g:layer left="50px" width="0px" top="0px" bottom="0px">
+					<g:LayoutPanel ui:field="favouriteListBase" visible="false" styleName="{style.fav_border}"/>
+				</g:layer>
+			</g:LayoutPanel>
+		</g:layer>
+		<g:layer right="0PX" width="50%" top="0PX" bottom="0PX">
+			<g:LayoutPanel ui:field="rightPanel" styleName="{style.right_bg}">
+				<g:layer left="0PX" width="100%" top="0PX" bottom="0PX">
+					<g:LayoutPanel ui:field="customerPanel">
+						<g:layer left="0px" right="0px" top="0px" bottom="0px">
+							<g:SimplePanel width="100%" height="100%" ui:field="customerBgPanel">
+								<g:Image resource="{theme.getLandingBundle.customerImg}" ui:field="customerBgImg"/>
+							</g:SimplePanel>
+						</g:layer>
+						<g:layer left="50px" right="50px" top="50px" bottom="50px">
+							<g:LayoutPanel ui:field="cookListBase">
+								<g:layer left="0px" width="0px" top="0px" bottom="0px">
+									<g:LayoutPanel ui:field="cookListContent"/>
+								</g:layer>
+							</g:LayoutPanel>
+						</g:layer>
+						<g:layer left="50px" right="50px" height="20px" bottom="20px">
+							<g:LayoutPanel ui:field="scrollBase">
+								<g:layer left="0px" width="0px" top="0px" bottom="0px">
+									<g:SimplePanel ui:field="scrollBar" styleName="{style.scrollbar}" />
+								</g:layer>
+							</g:LayoutPanel>
+						</g:layer>
+					</g:LayoutPanel>
+				</g:layer>
+				<g:layer left="-100%" width="100%" top="0PX" bottom="0PX">
+					<g:LayoutPanel ui:field="cookSigninPanel">
+						<g:layer>
+							<g:LayoutPanel styleName="{style.customer_layout}">
+								<g:layer left="10px" right="10px" top="190px" height="60px">
+									<c:LabelledTextField ui:field="cookUsernameField" />
+								</g:layer>
+								<g:layer left="10px" right="10px" top="250px" height="60px">
+									<c:LabelledPasswordField ui:field="cookPasswordField" />
+								</g:layer>
+								<g:layer right="-10px" width="180px" top="350px" height="60px">
+									<g:Button ui:field="cookSigninBut" styleName="{style.button} {style.cook_text}" text="SIGN IN"/>
+								</g:layer>
+								<g:layer left="0px" right="0px" top="410px" height="30px">
+									<g:Label ui:field="cookAuthMsg" text="Oops, shall we try again?" visible="false" styleName="{style.authMsg}"/>
+								</g:layer>
+							</g:LayoutPanel>
 						</g:layer>
 					</g:LayoutPanel>
 				</g:layer>
 			</g:LayoutPanel>
 		</g:layer>
-		<g:layer right="0PX" width="50%" top="0PX" bottom="0PX">
-			<g:LayoutPanel>
-				<g:layer left="0px" right="0px" top="0px" bottom="0px">
-					<g:SimplePanel width="100%" height="100%" ui:field="customerBgPanel">
-						<g:Image resource="{theme.getLandingBundle.customerImg}" ui:field="customerBgImg"/>
-					</g:SimplePanel>
-				</g:layer>
-				<g:layer left="100px" width="400px" top="50px" bottom="50px">
-					<c:CookWidget />
-				</g:layer>
-				<g:layer left="550px" width="400px" top="50px" bottom="50px">
-					<c:CookWidget />
-				</g:layer>
-			</g:LayoutPanel>
-		</g:layer>
-		<g:layer left="45%" right="45%" top="45%" bottom="45%">
-			<g:LayoutPanel styleName="{style.button_layout}">
+		<g:layer left="45%" right="45%" top="40%" bottom="40%">
+			<g:LayoutPanel ui:field="switchBase" styleName="{style.button_layout}">
 				<g:layer left="0px" right="0px" top="0px" bottom="0px">
 					<g:VerticalPanel width="100%" height="100%" horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_MIDDLE" >
 						<g:Button styleName="{style.switch_button} {style.switch_text}" ui:field="switchButton"/>
+					</g:VerticalPanel>
+				</g:layer>
+			</g:LayoutPanel>
+		</g:layer>
+		<g:layer right="50%" width="80px" top="0px" height="90px">
+			<g:LayoutPanel styleName="{style.button_layout}">
+				<g:layer left="0px" right="0px" top="0px" bottom="0px">
+					<g:VerticalPanel width="100%" height="100%" horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_MIDDLE" >
+						<g:Button styleName="{style.switch_button} {style.swagger_text}" ui:field="swaggerButton"/>
+					</g:VerticalPanel>
+				</g:layer>
+			</g:LayoutPanel>
+		</g:layer>
+		<g:layer left="50%" width="80px" top="0px" height="90px">
+			<g:LayoutPanel styleName="{style.button_layout}">
+				<g:layer left="0px" right="0px" top="0px" bottom="0px">
+					<g:VerticalPanel width="100%" height="100%" horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_MIDDLE" >
+						<g:Button styleName="{style.switch_button} {style.git_text}" ui:field="gitButton"/>
 					</g:VerticalPanel>
 				</g:layer>
 			</g:LayoutPanel>
