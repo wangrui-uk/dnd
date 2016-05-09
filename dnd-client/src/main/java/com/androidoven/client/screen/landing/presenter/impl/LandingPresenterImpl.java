@@ -14,32 +14,32 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 
 public class LandingPresenterImpl implements LandingPresenter {
-	
+
 	private LandingView display = null;
-	
+
 	public LandingPresenterImpl(LandingView display) {
 		this.display = display;
 	}
-	
+
 	private void customerCooksList() {
-		Defaults.setServiceRoot(GWT.getHostPageBaseURL()+"api");
+		Defaults.setServiceRoot(GWT.getHostPageBaseURL() + "api");
 		CustomerService.I.cookslist(new MethodCallback<CooksListView>() {
-			
+
 			@Override
 			public void onSuccess(Method method, CooksListView response) {
 				display.loadCooksList(response.getList());
 			}
-			
+
 			@Override
 			public void onFailure(Method method, Throwable exception) {
 				Window.alert("Fail to retrieve cooks list");
 			}
-			
+
 		});
 	}
-	
+
 	private void customerSignin(Customer customer) {
-		Defaults.setServiceRoot(GWT.getHostPageBaseURL()+"api");
+		Defaults.setServiceRoot(GWT.getHostPageBaseURL() + "api");
 		CustomerService.I.signinCustomer(customer, new MethodCallback<CooksListViewWithCustomer>() {
 
 			@Override
@@ -51,7 +51,24 @@ public class LandingPresenterImpl implements LandingPresenter {
 			public void onSuccess(Method method, CooksListViewWithCustomer response) {
 				display.signinCustomer(response);
 			}
-			
+
+		});
+	}
+
+	private void customerUpdate(Customer customer) {
+		Defaults.setServiceRoot(GWT.getHostPageBaseURL() + "api");
+		CustomerService.I.updateCustomer(customer, new MethodCallback<CooksListViewWithCustomer>() {
+
+			@Override
+			public void onFailure(Method method, Throwable exception) {
+				Window.alert("Fail to update customer");
+			}
+
+			@Override
+			public void onSuccess(Method method, CooksListViewWithCustomer response) {
+				display.updateCustomer(response);
+			}
+
 		});
 	}
 
@@ -59,7 +76,7 @@ public class LandingPresenterImpl implements LandingPresenter {
 	public void go() {
 		this.display.setPresenter(this);
 		this.customerCooksList();
-		
+
 	}
 
 	@Override
@@ -73,6 +90,11 @@ public class LandingPresenterImpl implements LandingPresenter {
 		customer.setId(user);
 		customer.setPassword(password);
 		this.customerSignin(customer);
+	}
+
+	@Override
+	public void onUpdateCustomerFavourite(Customer customer) {
+		this.customerUpdate(customer);
 	}
 
 }

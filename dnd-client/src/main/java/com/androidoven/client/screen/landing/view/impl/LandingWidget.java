@@ -19,6 +19,8 @@ import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
@@ -30,6 +32,8 @@ import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.layout.client.Layout.AnimationCallback;
+import com.google.gwt.layout.client.Layout.Layer;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -54,6 +58,10 @@ public class LandingWidget extends ResizeComposite
 		CUSTOMER_SIGNIN,
 
 		COOK_SIGNIN,
+		
+		CUSTOMER,
+		
+		COOK,
 
 		;
 
@@ -116,7 +124,18 @@ public class LandingWidget extends ResizeComposite
 	Button customerSigninBut;
 	@UiField
 	Label customerAuthMsg;
+	
+	@UiField
+	LayoutPanel switchBase;
+	
+	
+	@UiField
+	LayoutPanel favouriteBase;
+	@UiField
+	Label favouriteIconBase;
+	
 	private Customer customer;
+	private boolean favouriteExpand = false;
 	
 	public LandingWidget() {
 		this.initWidget(uiBinder.createAndBindUi(this));
@@ -124,8 +143,13 @@ public class LandingWidget extends ResizeComposite
 	}
 
 	private void processImage(SimplePanel frame, Image image, ImageResource resource) {
-		image.setWidth(resource.getWidth() * frame.getOffsetHeight() / resource.getHeight() + Unit.PX.getType());
-		image.setHeight(frame.getOffsetHeight() + Unit.PX.getType());
+		if (frame.getOffsetWidth() > resource.getWidth()) {
+			image.setWidth(frame.getOffsetWidth() + Unit.PX.getType());
+			image.setHeight(resource.getHeight()*frame.getOffsetWidth()/resource.getWidth() + Unit.PX.getType());
+		}else{
+			image.setWidth(resource.getWidth() * frame.getOffsetHeight() / resource.getHeight() + Unit.PX.getType());
+			image.setHeight(frame.getOffsetHeight() + Unit.PX.getType());
+		}
 	}
 
 	private void resetCooksList() {
@@ -138,8 +162,29 @@ public class LandingWidget extends ResizeComposite
 		this.resetCooksList();
 		if (null != this.cooksList && this.cooksList.size() > 0) {
 			for (int i = 0; i < this.cooksList.size(); i++) {
-				CookWidget cw = new CookWidget();
+				CookWidget cw = new CookWidget(new CookWidget.Handler() {
+					
+					@Override
+					public void onFavourite(CookWidget source, long id, boolean like) {
+						if (null != customer) {
+							if (like && !customer.getFavouriteCooksList().contains(id)) {
+								customer.getFavouriteCooksList().add(id);
+							}else if (!like && customer.getFavouriteCooksList().contains(id)) {
+								customer.getFavouriteCooksList().remove(id);
+							}
+							presenter.onUpdateCustomerFavourite(customer);
+						}
+					}
+					
+				});
 				cw.setCook(this.cooksList.get(i));
+				if (0 == i) {
+					cw.setImage(ThemeManager.I.getLandingBundle().cook01());
+				}else if (1 == i) {
+					cw.setImage(ThemeManager.I.getLandingBundle().cook02());
+				}else if (2 == i) {
+					cw.setImage(ThemeManager.I.getLandingBundle().cook03());
+				}
 				this.cookListContent.add(cw);
 				this.cookListContent.setWidgetTopBottom(cw, 0, Unit.PX, 0, Unit.PX);
 				this.cookListContent.setWidgetLeftWidth(cw, i * 410, Unit.PX, 400, Unit.PX);
@@ -198,8 +243,38 @@ public class LandingWidget extends ResizeComposite
 
 		this.customerUsernameField.title.setText("Username");
 		this.customerPasswordField.title.setText("Password");
+		this.customerPasswordField.textbox.addKeyPressHandler(new KeyPressHandler() {
+			
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				if (13 == event.getCharCode()) {
+					submitCustomer();
+				}
+			}
+			
+		});
 		this.customerSigninBut.addClickHandler(this);
 
+		this.favouriteIconBase.setText("\uf08a");
+		this.favouriteIconBase.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				favouriteExpand = !favouriteExpand;
+				if (favouriteExpand) {
+					frame.setWidgetLeftWidth(leftPanel, 0, Unit.PX, 250, Unit.PX);
+					frame.setWidgetLeftRight(rightPanel, 250, Unit.PX, 0, Unit.PX);
+					
+					frame.setWidgetLeftWidth(switchBase, 200, Unit.PX, 100, Unit.PX);
+				}else{
+					frame.setWidgetLeftWidth(leftPanel, 0, Unit.PX, 50, Unit.PX);
+					frame.setWidgetLeftRight(rightPanel, 50, Unit.PX, 0, Unit.PX);
+					
+					frame.setWidgetLeftWidth(switchBase, 0, Unit.PX, 100, Unit.PX);
+				}
+				frame.animate(200);
+			}
+		});
 	}
 
 	@Override
@@ -249,25 +324,58 @@ public class LandingWidget extends ResizeComposite
 				rightPanel.setWidgetLeftWidth(cookSigninPanel, -100, Unit.PCT, 100, Unit.PCT);
 				leftPanel.animate(200);
 				rightPanel.animate(200);
+			} else if (status.equals(STATUS.CUSTOMER)) {
+				this.customer = null;
+				for (int i=0; i<this.cookListContent.getWidgetCount(); i++) {
+					CookWidget cookWidget = (CookWidget)this.cookListContent.getWidget(i);
+					cookWidget.likeButton.setVisible(false);
+				}
+				this.status = STATUS.CUSTOMER_SIGNIN;
+				this.switchButton.setText("\uf06d");
+				
+				this.customerSigninPanel.setVisible(true);
+				this.frame.setWidgetLeftWidth(this.leftPanel, 0, Unit.PX, 50, Unit.PCT);
+				this.frame.setWidgetRightWidth(this.rightPanel, 0, Unit.PX, 50, Unit.PCT);
+				
+				this.frame.setWidgetLeftRight(this.switchBase, 45, Unit.PCT, 45, Unit.PCT);
+				this.frame.setWidgetTopBottom(this.switchBase, 40, Unit.PCT, 40, Unit.PCT);
+				
+				this.frame.animate(200, new AnimationCallback() {
+					
+					@Override
+					public void onLayout(Layer layer, double progress) {}
+					
+					@Override
+					public void onAnimationComplete() {
+						refreshScreen();
+					}
+					
+				});
+				this.favouriteBase.setVisible(false);
+				this.favouriteExpand = false;
 			}
 		} else if (source.equals(this.customerSigninBut)) {
-			String user = this.customerUsernameField.getText();
-			String password = this.customerPasswordField.getText();
-			if (null == user || "".equals(user)) {
-				this.customerAuthMsg.setVisible(true);
-				this.customerAuthMsg.setText("Username please?");
-				this.customerUsernameField.textbox.setFocus(true);
-				return;
-			}
-			if (null == password || "".equals(password)) {
-				this.customerAuthMsg.setVisible(true);
-				this.customerAuthMsg.setText("Password please?");
-				this.customerPasswordField.textbox.setFocus(true);
-				return;
-			}
-			if (null != this.presenter) {
-				this.presenter.onSigninCustomer(user, password);
-			}
+			this.submitCustomer();
+		}
+	}
+	
+	private void submitCustomer() {
+		String user = this.customerUsernameField.getText();
+		String password = this.customerPasswordField.getText();
+		if (null == user || "".equals(user)) {
+			this.customerAuthMsg.setVisible(true);
+			this.customerAuthMsg.setText("Username please?");
+			this.customerUsernameField.textbox.setFocus(true);
+			return;
+		}
+		if (null == password || "".equals(password)) {
+			this.customerAuthMsg.setVisible(true);
+			this.customerAuthMsg.setText("Password please?");
+			this.customerPasswordField.textbox.setFocus(true);
+			return;
+		}
+		if (null != this.presenter) {
+			this.presenter.onSigninCustomer(user, password);
 		}
 	}
 
@@ -289,16 +397,60 @@ public class LandingWidget extends ResizeComposite
 		if (null != response.getCustomer().getId()) {
 			this.customer = response.getCustomer();
 			this.customerAuthMsg.setVisible(false);
-			this.customerUsernameField.textbox.setText(null);
-			this.customerPasswordField.textbox.setText(null);
+			this.customerUsernameField.reset();
+			this.customerPasswordField.reset();
 			for (int i=0; i<this.cookListContent.getWidgetCount(); i++) {
 				CookWidget cookWidget = (CookWidget)this.cookListContent.getWidget(i);
 				cookWidget.likeButton.setVisible(true);
-				if (this.customer.getFavouriteCooksList().contains(cookWidget.cookView.getId())) {
-					cookWidget.likeButton.setText("\uf004");
-				}else{
-					cookWidget.likeButton.setText("\uf08a");
+				cookWidget.setLike(this.customer.getFavouriteCooksList().contains(cookWidget.cookView.getId()));
+			}
+			this.status = STATUS.CUSTOMER;
+			this.switchButton.setText("\uf08b");
+			
+			this.customerSigninPanel.setVisible(false);
+			this.frame.setWidgetLeftWidth(this.leftPanel, 0, Unit.PX, 50, Unit.PX);
+			this.frame.setWidgetLeftRight(this.rightPanel, 50, Unit.PX, 0, Unit.PX);
+			
+			this.frame.setWidgetLeftWidth(this.switchBase, 0, Unit.PX, 100, Unit.PX);
+			this.frame.setWidgetBottomHeight(this.switchBase, 0, Unit.PX, 100, Unit.PX);
+			
+			this.frame.animate(200, new AnimationCallback() {
+				
+				@Override
+				public void onLayout(Layer layer, double progress) {}
+				
+				@Override
+				public void onAnimationComplete() {
+					refreshScreen();
 				}
+				
+			});
+			this.favouriteBase.setVisible(true);
+		}else{
+			this.customerAuthMsg.setVisible(true);
+			this.customerAuthMsg.setText("Oops, shall we try again?");
+		}
+	}
+	
+	private void refreshScreen() {
+		this.processImage(this.customerBgPanel, this.customerBgImg, ThemeManager.I.getLandingBundle().customerImg());
+		this.processImage(this.cookBgPanel, this.cookBgImg, ThemeManager.I.getLandingBundle().cookImg());
+		if (null != this.cooksList && this.cooksList.size() > 0) {
+			int cookListW = this.cooksList.size() * 410;
+			this.cookBarW = this.cookListBase.getOffsetWidth() * this.scrollBase.getOffsetWidth() / cookListW;
+			this.cookListBase.setWidgetLeftWidth(this.cookListContent, this.cookViewLeft, Unit.PX, cookListW, Unit.PX);
+			this.scrollBase.setWidgetLeftWidth(this.scrollBar, this.cookBarLeft, Unit.PX, this.cookBarW, Unit.PX);
+		}
+	}
+	
+	@Override
+	public void updateCustomer(CooksListViewWithCustomer response) {
+		if (null != response.getCustomer().getId()) {
+			this.customer = response.getCustomer();
+			for (int i=0; i<this.cookListContent.getWidgetCount(); i++) {
+				CookWidget cookWidget = (CookWidget)this.cookListContent.getWidget(i);
+				cookWidget.likeButton.setVisible(true);
+				cookWidget.setLike(this.customer.getFavouriteCooksList().contains(cookWidget.cookView.getId()));
 			}
 		}else{
 			this.customerAuthMsg.setVisible(true);

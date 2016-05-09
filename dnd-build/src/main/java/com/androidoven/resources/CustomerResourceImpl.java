@@ -22,8 +22,24 @@ public class CustomerResourceImpl implements CustomerResource {
 	public CooksListViewWithCustomer signinCustomer(Customer customer) {
 		CooksListViewWithCustomer clvwc = new CooksListViewWithCustomer();
 		if (CustomerPojo.getInstance().verifyCustomer(customer)) {
-			customer.setPassword(null);
 			customer.getFavouriteCooksList().addAll(CustomerPojo.getInstance().getCustomer().getFavouriteCooksList());
+			clvwc.setCustomer(customer);
+			clvwc.getList().addAll(CooksListViewPojo.getInstance().getCooksListView().getList());
+		}else{
+			customer.setId(null);
+			customer.setName(null);
+			customer.setPassword(null);
+		}
+		clvwc.setCustomer(customer);
+		return clvwc;
+	}
+
+	@Override
+	public CooksListViewWithCustomer updateCustomer(Customer customer) {
+		CooksListViewWithCustomer clvwc = new CooksListViewWithCustomer();
+		if (CustomerPojo.getInstance().verifyCustomer(customer)) {
+			CustomerPojo.getInstance().getCustomer().getFavouriteCooksList().clear();
+			CustomerPojo.getInstance().getCustomer().getFavouriteCooksList().addAll(customer.getFavouriteCooksList());
 			clvwc.setCustomer(customer);
 			clvwc.getList().addAll(CooksListViewPojo.getInstance().getCooksListView().getList());
 		}else{

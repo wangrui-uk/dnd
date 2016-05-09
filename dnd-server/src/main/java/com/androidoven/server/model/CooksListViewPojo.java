@@ -7,7 +7,7 @@ import com.androidoven.transport.xsd.customerservice.CooksListView;
 public class CooksListViewPojo {
 	
 	private static CooksListViewPojo I = null;
-	private static String NAME[] = {"Ruth", "Nancy", "William", "Coco", "Jacob"};
+	private static String NAME[] = {"Tom", "Jerry", "George", "William", "Jacob"};
 	private CooksListView list = null;
 	
 	private CooksListViewPojo() {}

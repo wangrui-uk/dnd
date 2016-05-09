@@ -20,6 +20,12 @@ import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.Widget;
 
 public class CookWidget extends ResizeComposite implements MouseOutHandler, MouseMoveHandler {
+	
+	public interface Handler {
+		
+		void onFavourite(CookWidget source, long id, boolean like);
+		
+	}
 
 	interface CookWidgetUiBinder extends UiBinder<Widget, CookWidget> {
 	}
@@ -61,8 +67,8 @@ public class CookWidget extends ResizeComposite implements MouseOutHandler, Mous
 	Label dishValue4;
 	@UiField
 	Label dishValue5;
-
-	public CookWidget() {
+	
+	public CookWidget(final Handler handler) {
 		this.initWidget(uiBinder.createAndBindUi(this));
 
 		this.cookIcon.setText("\uf007");
@@ -72,11 +78,7 @@ public class CookWidget extends ResizeComposite implements MouseOutHandler, Mous
 			@Override
 			public void onClick(ClickEvent event) {
 				like = !like;
-				if (like) {
-					likeButton.setText("\uf004");
-				}else{
-					likeButton.setText("\uf08a");
-				}
+				handler.onFavourite(CookWidget.this, cookView.getId(), like);
 			}
 		});
 
@@ -84,8 +86,27 @@ public class CookWidget extends ResizeComposite implements MouseOutHandler, Mous
 		this.frame.addDomHandler(this, MouseMoveEvent.getType());
 		
 		this.likeButton.setVisible(false);
+		
+		this.cookHeader.addDomHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				if (likeButton.isVisible()) {
+					like = !like;
+					handler.onFavourite(CookWidget.this, cookView.getId(), like);
+				}
+			}
+		}, ClickEvent.getType());
 	}
 
+	public void setLike(boolean like) {
+		if (this.like = like) {
+			this.likeButton.setText("\uf004");
+		}else{
+			this.likeButton.setText("\uf08a");
+		}
+	}
+	
 	public void setImage(ImageResource resource) {
 		this.cookImg.setResource(resource);
 		this.cookImg.setWidth("380px");
@@ -118,27 +139,31 @@ public class CookWidget extends ResizeComposite implements MouseOutHandler, Mous
 
 	@Override
 	public void onMouseOut(MouseOutEvent event) {
-		if (up) {
-			up = !up;
-			this.frame.setWidgetTopHeight(this.cookHeader, 80, Unit.PX, 300, Unit.PX);
-			this.frame.animate(200);
+		if (this.likeButton.isVisible()) {
+			if (up) {
+				up = !up;
+				this.frame.setWidgetTopHeight(this.cookHeader, 80, Unit.PX, 300, Unit.PX);
+				this.frame.animate(200);
+			}
 		}
 	}
 
 	@Override
 	public void onMouseMove(MouseMoveEvent event) {
-		int y = event.getRelativeY(this.frame.getElement());
-		if (y < 330) {
-			if (!up) {
-				up = !up;
-				this.frame.setWidgetTopHeight(this.cookHeader, 0, Unit.PX, 300, Unit.PX);
-				this.frame.animate(200);
-			}
-		} else {
-			if (up) {
-				up = !up;
-				this.frame.setWidgetTopHeight(this.cookHeader, 80, Unit.PX, 300, Unit.PX);
-				this.frame.animate(200);
+		if (this.likeButton.isVisible()) {
+			int y = event.getRelativeY(this.frame.getElement());
+			if (y < 330) {
+				if (!up) {
+					up = !up;
+					this.frame.setWidgetTopHeight(this.cookHeader, 0, Unit.PX, 300, Unit.PX);
+					this.frame.animate(200);
+				}
+			} else {
+				if (up) {
+					up = !up;
+					this.frame.setWidgetTopHeight(this.cookHeader, 80, Unit.PX, 300, Unit.PX);
+					this.frame.animate(200);
+				}
 			}
 		}
 	}

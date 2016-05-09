@@ -82,7 +82,6 @@ public class LabelledTextField extends ResizeComposite {
 					title.addStyleName(style.label_size());
 					frame.setWidgetBottomHeight(title, 0, Unit.PX, 30, Unit.PX);
 					frame.animate(200);
-					textbox.setFocus(false);
 				}
 			}
 		});
@@ -90,6 +89,16 @@ public class LabelledTextField extends ResizeComposite {
 
 	public String getText() {
 		return this.textbox.getText();
+	}
+
+	public void reset() {
+		this.textbox.setText(null);
+		title.removeStyleName(style.label_focus_color());
+		title.addStyleName(style.label_color());
+		title.removeStyleName(style.label_focus_size());
+		title.addStyleName(style.label_size());
+		frame.setWidgetBottomHeight(title, 0, Unit.PX, 30, Unit.PX);
+		frame.animate(200);
 	}
 
 }

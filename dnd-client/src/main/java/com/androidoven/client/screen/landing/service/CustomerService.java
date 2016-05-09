@@ -29,5 +29,11 @@ public interface CustomerService extends RestService {
     @Produces("application/json")
     @Path("/signinCustomer")
     void signinCustomer(Customer customer, MethodCallback<CooksListViewWithCustomer> callback);
+	
+	@POST
+    @Consumes("application/json")
+    @Produces("application/json")
+    @Path("/updateCustomer")
+    void updateCustomer(Customer customer, MethodCallback<CooksListViewWithCustomer> callback);
 
 }

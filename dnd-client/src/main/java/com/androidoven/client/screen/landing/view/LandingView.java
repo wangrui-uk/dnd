@@ -13,4 +13,6 @@ public interface LandingView extends View<LandingPresenter> {
 
 	void signinCustomer(CooksListViewWithCustomer response);
 
+	void updateCustomer(CooksListViewWithCustomer response);
+
 }

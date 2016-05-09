@@ -28,6 +28,17 @@
 					</response>
 				</method>
 			</resource>
+			
+			<resource path="/updateCustomer">
+				<method id="updateCustomer" name="POST">
+					<request>
+						<representation mediaType="application/json" element="cm:Customer"/>
+					</request>
+					<response>
+						<representation mediaType="application/json" element="cs:CooksListViewWithCustomer"/>
+					</response>
+				</method>
+			</resource>
 		</resource>
 	</resources>
 
