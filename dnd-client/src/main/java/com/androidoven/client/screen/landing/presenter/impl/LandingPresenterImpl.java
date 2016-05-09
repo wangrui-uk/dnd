@@ -5,8 +5,10 @@ import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 
 import com.androidoven.client.screen.landing.presenter.LandingPresenter;
+import com.androidoven.client.screen.landing.service.CookService;
 import com.androidoven.client.screen.landing.service.CustomerService;
 import com.androidoven.client.screen.landing.view.LandingView;
+import com.androidoven.transport.xsd.common.Cook;
 import com.androidoven.transport.xsd.common.Customer;
 import com.androidoven.transport.xsd.customerservice.CooksListView;
 import com.androidoven.transport.xsd.customerservice.CooksListViewWithCustomer;
@@ -71,6 +73,23 @@ public class LandingPresenterImpl implements LandingPresenter {
 
 		});
 	}
+	
+	private void cookSignin(Cook cook) {
+		Defaults.setServiceRoot(GWT.getHostPageBaseURL() + "api");
+		CookService.I.signinCook(cook, new MethodCallback<Cook>() {
+
+			@Override
+			public void onFailure(Method method, Throwable exception) {
+				Window.alert("Fail to signin");
+			}
+
+			@Override
+			public void onSuccess(Method method, Cook response) {
+				display.signinCook(response);
+			}
+
+		});
+	}
 
 	@Override
 	public void go() {
@@ -95,6 +114,14 @@ public class LandingPresenterImpl implements LandingPresenter {
 	@Override
 	public void onUpdateCustomerFavourite(Customer customer) {
 		this.customerUpdate(customer);
+	}
+
+	@Override
+	public void onSigninCook(String user, String password) {
+		Cook cook = new Cook();
+		cook.setId(user);
+		cook.setPassword(password);
+		this.cookSignin(cook);
 	}
 
 }

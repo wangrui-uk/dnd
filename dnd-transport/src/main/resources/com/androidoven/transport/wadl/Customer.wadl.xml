@@ -8,7 +8,7 @@
 		<include href="../xsd/Common.xsd" />
 	</grammars>
 
-	<resources base="http://www.androidoven.com:8080/dnd/api">
+	<resources base="http://www.androidoven.com/dnd/api">
 		<resource id="com.androidoven.transport.wadl.CustomerResource">
 			<resource path="/cookslist">
 				<method id="cookslist" name="GET">

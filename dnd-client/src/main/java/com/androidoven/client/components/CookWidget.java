@@ -23,7 +23,7 @@ public class CookWidget extends ResizeComposite implements MouseOutHandler, Mous
 	
 	public interface Handler {
 		
-		void onFavourite(CookWidget source, long id, boolean like);
+		void onFavourite(CookWidget source, String id, boolean like);
 		
 	}
 

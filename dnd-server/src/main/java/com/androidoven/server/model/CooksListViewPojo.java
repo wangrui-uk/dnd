@@ -1,5 +1,6 @@
 package com.androidoven.server.model;
 
+import com.androidoven.transport.xsd.common.Cook;
 import com.androidoven.transport.xsd.common.CookView;
 import com.androidoven.transport.xsd.common.Dish;
 import com.androidoven.transport.xsd.customerservice.CooksListView;
@@ -7,18 +8,17 @@ import com.androidoven.transport.xsd.customerservice.CooksListView;
 public class CooksListViewPojo {
 	
 	private static CooksListViewPojo I = null;
-	private static String NAME[] = {"Tom", "Jerry", "George", "William", "Jacob"};
 	private CooksListView list = null;
 	
 	private CooksListViewPojo() {}
 	
 	private void createList() {
 		this.list = new CooksListView();
-		
-		for (int i=0; i<5; i++) {
+		Cook cooks[] = CookPojo.getInstance().getCooks();
+		for (int i=0; i<cooks.length; i++) {
 			CookView cv = new CookView();
-			cv.setId(i);
-			cv.setName(NAME[i]);
+			cv.setId(cooks[i].getId());
+			cv.setName(cooks[i].getName());
 			cv.setFavourite(false);
 			
 			Dish dish = new Dish();
@@ -52,13 +52,13 @@ public class CooksListViewPojo {
 	}
 	
 	public CooksListView getCooksListView() {
+		this.createList();
 		return this.list;
 	}
 	
 	public static CooksListViewPojo getInstance() {
 		if (null == I) {
 			I = new CooksListViewPojo();
-			I.createList();
 		}
 		return I;
 	}

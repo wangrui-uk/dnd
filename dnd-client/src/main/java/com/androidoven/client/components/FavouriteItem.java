@@ -16,7 +16,7 @@ public class FavouriteItem extends Composite {
 	public Label cookName;
 	@UiField
 	public Label close;
-	public long id = -1;
+	public String id = null;
 	
 	
 	public FavouriteItem() {

@@ -89,6 +89,16 @@
 										<extraarg>-verbose</extraarg>
 									</extraargs>
 								</wadlOption>
+								<wadlOption>
+									<wadl>src/main/resources/com/androidoven/transport/wadl/Cook.wadl.xml</wadl>
+									<impl>false</impl>
+									<bindingFiles>
+										<bindingFile>src/main/resources/buildings.xjb</bindingFile>
+									</bindingFiles>
+									<extraargs>
+										<extraarg>-verbose</extraarg>
+									</extraargs>
+								</wadlOption>
 							</wadlOptions>
 						</configuration>
 					</execution>

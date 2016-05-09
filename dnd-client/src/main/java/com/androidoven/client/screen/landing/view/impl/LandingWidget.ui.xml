@@ -169,6 +169,13 @@
 		.fav_border {
 			border-left: 1px solid rgb(150, 150, 150);
 		}
+		.cookName {
+			text-align: left;
+			font-family: 'Lato', Arial;
+			font-size: 72px;
+			line-height: 100px;
+			color: white;
+		}
 	</ui:style>
 	<ui:with type="com.androidoven.client.resources.ThemeManager" field="theme" />
 	<g:LayoutPanel ui:field="frame">
@@ -200,6 +207,9 @@
 							<g:SimplePanel width="100%" height="100%" ui:field="cookBgPanel">
 								<g:Image resource="{theme.getLandingBundle.cookImg}" ui:field="cookBgImg"/>
 							</g:SimplePanel>
+						</g:layer>
+						<g:layer left="20px" right="20px" top="20px" height="100px">
+							<g:Label ui:field="cookLabel" styleName="{style.cookName}" visible="false"/>
 						</g:layer>
 					</g:LayoutPanel>
 				</g:layer>

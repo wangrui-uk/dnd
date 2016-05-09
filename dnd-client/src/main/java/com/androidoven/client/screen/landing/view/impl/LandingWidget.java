@@ -10,6 +10,7 @@ import com.androidoven.client.components.SwitchBubble;
 import com.androidoven.client.resources.ThemeManager;
 import com.androidoven.client.screen.landing.presenter.LandingPresenter;
 import com.androidoven.client.screen.landing.view.LandingView;
+import com.androidoven.transport.xsd.common.Cook;
 import com.androidoven.transport.xsd.common.CookView;
 import com.androidoven.transport.xsd.common.Customer;
 import com.androidoven.transport.xsd.customerservice.CooksListViewWithCustomer;
@@ -82,6 +83,9 @@ public class LandingWidget extends ResizeComposite
 	private HandlerRegistration maskEvent = null;
 	private int scrollX = -1;
 	private int cookBarW = 0;
+	private Customer customer;
+	private boolean favouriteExpand = false;
+	private Cook cook = null;
 	@UiField
 	LayoutPanel frame;
 	@UiField
@@ -118,8 +122,6 @@ public class LandingWidget extends ResizeComposite
 	Button gitButton;
 	@UiField
 	Button swaggerButton;
-	
-	
 	@UiField
 	LabelledTextField customerUsernameField;
 	@UiField
@@ -128,7 +130,6 @@ public class LandingWidget extends ResizeComposite
 	Button customerSigninBut;
 	@UiField
 	Label customerAuthMsg;
-	
 	@UiField
 	LabelledTextField cookUsernameField;
 	@UiField
@@ -137,21 +138,16 @@ public class LandingWidget extends ResizeComposite
 	Button cookSigninBut;
 	@UiField
 	Label cookAuthMsg;
-	
 	@UiField
 	LayoutPanel switchBase;
-	
-	
 	@UiField
 	LayoutPanel favouriteBase;
 	@UiField
 	Label favouriteIconBase;
-	
 	@UiField
 	LayoutPanel favouriteListBase;
-	
-	private Customer customer;
-	private boolean favouriteExpand = false;
+	@UiField
+	Label cookLabel;
 	
 	public LandingWidget() {
 		this.initWidget(uiBinder.createAndBindUi(this));
@@ -181,7 +177,7 @@ public class LandingWidget extends ResizeComposite
 				CookWidget cw = new CookWidget(new CookWidget.Handler() {
 					
 					@Override
-					public void onFavourite(CookWidget source, long id, boolean like) {
+					public void onFavourite(CookWidget source, String id, boolean like) {
 						if (null != customer) {
 							if (like && !customer.getFavouriteCooksList().contains(id)) {
 								customer.getFavouriteCooksList().add(id);
@@ -238,6 +234,22 @@ public class LandingWidget extends ResizeComposite
 				Window.open("http://www.androidoven.com/dnd/apidoc/index.html", "_blank", "");
 			}
 		});
+		this.swaggerButton.addMouseOverHandler(new MouseOverHandler() {
+
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				switchBubble.show(swaggerButton, "Service API");
+			}
+
+		});
+		this.swaggerButton.addMouseOutHandler(new MouseOutHandler() {
+
+			@Override
+			public void onMouseOut(MouseOutEvent event) {
+				switchBubble.hide();
+			}
+
+		});
 		
 		this.gitButton.setText("\uf09b");
 		this.gitButton.addClickHandler(new ClickHandler() {
@@ -246,6 +258,22 @@ public class LandingWidget extends ResizeComposite
 			public void onClick(ClickEvent event) {
 				Window.open("https://github.com/wangrui-uk/dnd", "_blank", "");
 			}
+		});
+		this.gitButton.addMouseOverHandler(new MouseOverHandler() {
+
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				switchBubble.show(gitButton, "GitHub");
+			}
+
+		});
+		this.gitButton.addMouseOutHandler(new MouseOutHandler() {
+
+			@Override
+			public void onMouseOut(MouseOutEvent event) {
+				switchBubble.hide();
+			}
+
 		});
 
 		this.switchBubble.setWidth(200);
@@ -298,7 +326,7 @@ public class LandingWidget extends ResizeComposite
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
 				if (13 == event.getCharCode()) {
-					submitCustomer();
+					submitCook();
 				}
 			}
 			
@@ -403,9 +431,36 @@ public class LandingWidget extends ResizeComposite
 				this.favouriteExpand = false;
 				this.favouriteListBase.setVisible(false);
 				this.leftPanel.setWidgetLeftWidth(this.favouriteListBase, 50, Unit.PX, 0, Unit.PX);
+			} else if (status.equals(STATUS.COOK)) {
+				this.cook = null;
+				this.status = STATUS.COOK_SIGNIN;
+				this.switchButton.setText("\uf0fc");
+				
+				this.cookSigninPanel.setVisible(true);
+				this.frame.setWidgetLeftWidth(this.leftPanel, 0, Unit.PX, 50, Unit.PCT);
+				this.frame.setWidgetRightWidth(this.rightPanel, 0, Unit.PX, 50, Unit.PCT);
+				
+				this.frame.setWidgetLeftRight(this.switchBase, 45, Unit.PCT, 45, Unit.PCT);
+				this.frame.setWidgetTopBottom(this.switchBase, 40, Unit.PCT, 40, Unit.PCT);
+				
+				this.frame.animate(200, new AnimationCallback() {
+					
+					@Override
+					public void onLayout(Layer layer, double progress) {}
+					
+					@Override
+					public void onAnimationComplete() {
+						refreshScreen();
+					}
+					
+				});
+				this.cookLabel.setVisible(false);
+				this.cookLabel.setText(null);
 			}
 		} else if (source.equals(this.customerSigninBut)) {
 			this.submitCustomer();
+		} else if (source.equals(this.cookSigninBut)) {
+			this.submitCook();
 		}
 	}
 	
@@ -428,7 +483,27 @@ public class LandingWidget extends ResizeComposite
 			this.presenter.onSigninCustomer(user, password);
 		}
 	}
-
+	
+	private void submitCook() {
+		String user = this.cookUsernameField.getText();
+		String password = this.cookPasswordField.getText();
+		if (null == user || "".equals(user)) {
+			this.cookAuthMsg.setVisible(true);
+			this.cookAuthMsg.setText("Username please?");
+			this.cookUsernameField.textbox.setFocus(true);
+			return;
+		}
+		if (null == password || "".equals(password)) {
+			this.cookAuthMsg.setVisible(true);
+			this.cookAuthMsg.setText("Password please?");
+			this.cookPasswordField.textbox.setFocus(true);
+			return;
+		}
+		if (null != this.presenter) {
+			this.presenter.onSigninCook(user, password);
+		}
+	}
+	
 	@Override
 	public void loadCooksList(List<CookView> list) {
 		this.cooksList = list;
@@ -545,6 +620,42 @@ public class LandingWidget extends ResizeComposite
 		}else{
 			this.customerAuthMsg.setVisible(true);
 			this.customerAuthMsg.setText("Oops, shall we try again?");
+		}
+	}
+	
+	@Override
+	public void signinCook(Cook response) {
+		if (null != response && null != response.getId()) {
+			this.cook = response;
+			this.cookAuthMsg.setVisible(false);
+			this.cookUsernameField.reset();
+			this.cookPasswordField.reset();
+			this.status = STATUS.COOK;
+			this.switchButton.setText("\uf08b");
+			
+			this.cookSigninPanel.setVisible(false);
+			this.frame.setWidgetRightWidth(this.rightPanel, 0, Unit.PX, 50, Unit.PX);
+			this.frame.setWidgetLeftRight(this.leftPanel, 0, Unit.PX, 50, Unit.PX);
+			
+			this.frame.setWidgetRightWidth(this.switchBase, 0, Unit.PX, 100, Unit.PX);
+			this.frame.setWidgetBottomHeight(this.switchBase, 0, Unit.PX, 100, Unit.PX);
+			
+			this.frame.animate(200, new AnimationCallback() {
+				
+				@Override
+				public void onLayout(Layer layer, double progress) {}
+				
+				@Override
+				public void onAnimationComplete() {
+					refreshScreen();
+				}
+				
+			});
+			this.cookLabel.setVisible(true);
+			this.cookLabel.setText(this.cook.getName());
+		}else{
+			this.cookAuthMsg.setVisible(true);
+			this.cookAuthMsg.setText("Oops, shall we try again?");
 		}
 	}
 
