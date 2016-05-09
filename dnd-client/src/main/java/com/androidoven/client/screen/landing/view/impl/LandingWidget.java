@@ -114,7 +114,10 @@ public class LandingWidget extends ResizeComposite
 	LayoutPanel scrollBase;
 	@UiField
 	SimplePanel scrollBar;
-	
+	@UiField
+	Button gitButton;
+	@UiField
+	Button swaggerButton;
 	
 	
 	@UiField
@@ -125,6 +128,15 @@ public class LandingWidget extends ResizeComposite
 	Button customerSigninBut;
 	@UiField
 	Label customerAuthMsg;
+	
+	@UiField
+	LabelledTextField cookUsernameField;
+	@UiField
+	LabelledPasswordField cookPasswordField;
+	@UiField
+	Button cookSigninBut;
+	@UiField
+	Label cookAuthMsg;
 	
 	@UiField
 	LayoutPanel switchBase;
@@ -217,6 +229,24 @@ public class LandingWidget extends ResizeComposite
 	@Override
 	public void initial() {
 		Window.addResizeHandler(this);
+		
+		this.swaggerButton.setText("\uf121");
+		this.swaggerButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				Window.open("http://www.androidoven.com/dnd/apidoc/index.html", "_blank", "");
+			}
+		});
+		
+		this.gitButton.setText("\uf09b");
+		this.gitButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				Window.open("https://github.com/wangrui-uk/dnd", "_blank", "");
+			}
+		});
 
 		this.switchBubble.setWidth(200);
 		this.switchButton.setText("\uf06d");
@@ -258,6 +288,23 @@ public class LandingWidget extends ResizeComposite
 			
 		});
 		this.customerSigninBut.addClickHandler(this);
+		
+		this.cookUsernameField.applyCookStyle();
+		this.cookPasswordField.applyCookStyle();
+		this.cookUsernameField.title.setText("Username");
+		this.cookPasswordField.title.setText("Password");
+		this.cookPasswordField.textbox.addKeyPressHandler(new KeyPressHandler() {
+			
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				if (13 == event.getCharCode()) {
+					submitCustomer();
+				}
+			}
+			
+		});
+		this.cookSigninBut.addClickHandler(this);
+		
 
 		this.favouriteIconBase.setText("\uf08a");
 		this.favouriteIconBase.addClickHandler(new ClickHandler() {

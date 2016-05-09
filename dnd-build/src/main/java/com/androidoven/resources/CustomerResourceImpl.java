@@ -9,15 +9,24 @@ import com.androidoven.transport.xsd.common.Customer;
 import com.androidoven.transport.xsd.customerservice.CooksListView;
 import com.androidoven.transport.xsd.customerservice.CooksListViewWithCustomer;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
+@Api(value="Customer Service", description="Customer Service provides API for Customer users")
 @Path("CustomerService")
 public class CustomerResourceImpl implements CustomerResource {
 
+	@ApiOperation(value="Return all cooks list", notes="Returned cook list cannot be modified", response=CooksListView.class)
+	@ApiResponses(value={@ApiResponse(code=200, message="Successful retrieval of cooks list", response=CooksListView.class)})
 	@Override
 	public CooksListView cookslist() {
 		return CooksListViewPojo.getInstance().getCooksListView();
 	}
 
+	@ApiOperation(value="Return all cooks list with customer information", notes="Returned cook list can be modified", response=CooksListViewWithCustomer.class)
+	@ApiResponses(value={@ApiResponse(code=200, message="Successful retrieval of cooks list and customer information", response=CooksListViewWithCustomer.class)})
 	@Override
 	public CooksListViewWithCustomer signinCustomer(Customer customer) {
 		CooksListViewWithCustomer clvwc = new CooksListViewWithCustomer();
@@ -34,6 +43,8 @@ public class CustomerResourceImpl implements CustomerResource {
 		return clvwc;
 	}
 
+	@ApiOperation(value="Update customer information", notes="Returned cook list can be modified", response=CooksListViewWithCustomer.class)
+	@ApiResponses(value={@ApiResponse(code=200, message="Update customer information", response=CooksListViewWithCustomer.class)})
 	@Override
 	public CooksListViewWithCustomer updateCustomer(Customer customer) {
 		CooksListViewWithCustomer clvwc = new CooksListViewWithCustomer();
