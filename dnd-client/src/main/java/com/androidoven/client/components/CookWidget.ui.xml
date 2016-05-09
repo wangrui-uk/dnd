@@ -42,10 +42,10 @@
 			overflow: hidden;
 			white-space: nowrap;
 			cursor: pointer;
-			color: rgba(80, 80, 80);
+			color: rgb(192, 57, 43);
 		}
 		.like_icon:HOVER {
-			color: rgb(235, 206, 187);
+			color: rgb(231, 76, 60);
 		}
 		.cook_icon {
 			outline: none;

@@ -139,6 +139,9 @@
 			color: rgb(239, 118, 75);
 			cursor: pointer;
 		}
+		.fav_border {
+			border-left: 1px solid rgb(150, 150, 150);
+		}
 	</ui:style>
 	<ui:with type="com.androidoven.client.resources.ThemeManager" field="theme" />
 	<g:LayoutPanel ui:field="frame">
@@ -179,6 +182,9 @@
 							<g:Label ui:field="favouriteIconBase" styleName="{style.favourite_icon}"/>
 						</g:layer>
 					</g:LayoutPanel>
+				</g:layer>
+				<g:layer left="50px" width="0px" top="0px" bottom="0px">
+					<g:LayoutPanel ui:field="favouriteListBase" visible="false" styleName="{style.fav_border}"/>
 				</g:layer>
 			</g:LayoutPanel>
 		</g:layer>

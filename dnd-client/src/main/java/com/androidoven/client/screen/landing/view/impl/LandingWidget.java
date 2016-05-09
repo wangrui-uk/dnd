@@ -3,6 +3,7 @@ package com.androidoven.client.screen.landing.view.impl;
 import java.util.List;
 
 import com.androidoven.client.components.CookWidget;
+import com.androidoven.client.components.FavouriteItem;
 import com.androidoven.client.components.LabelledPasswordField;
 import com.androidoven.client.components.LabelledTextField;
 import com.androidoven.client.components.SwitchBubble;
@@ -133,6 +134,9 @@ public class LandingWidget extends ResizeComposite
 	LayoutPanel favouriteBase;
 	@UiField
 	Label favouriteIconBase;
+	
+	@UiField
+	LayoutPanel favouriteListBase;
 	
 	private Customer customer;
 	private boolean favouriteExpand = false;
@@ -283,10 +287,7 @@ public class LandingWidget extends ResizeComposite
 	}
 
 	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-
-	}
+	public void dispose() {}
 
 	@Override
 	public void onResize(ResizeEvent event) {
@@ -353,6 +354,8 @@ public class LandingWidget extends ResizeComposite
 				});
 				this.favouriteBase.setVisible(false);
 				this.favouriteExpand = false;
+				this.favouriteListBase.setVisible(false);
+				this.leftPanel.setWidgetLeftWidth(this.favouriteListBase, 50, Unit.PX, 0, Unit.PX);
 			}
 		} else if (source.equals(this.customerSigninBut)) {
 			this.submitCustomer();
@@ -392,6 +395,31 @@ public class LandingWidget extends ResizeComposite
 		});
 	}
 	
+	private void createFavouriteItem(CookView cookView) {
+		final FavouriteItem fi = new FavouriteItem();
+		fi.cookName.setText(cookView.getName());
+		fi.id = cookView.getId();
+		fi.close.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				for (int i=0; i<cookListContent.getWidgetCount(); i++) {
+					CookWidget cw = (CookWidget)cookListContent.getWidget(i);
+					if (cw.cookView.getId() == fi.id) {
+						if (null != customer) {
+							customer.getFavouriteCooksList().remove(fi.id);
+							presenter.onUpdateCustomerFavourite(customer);
+						}
+						break;
+					}
+				}
+			}
+		});
+		this.favouriteListBase.add(fi);
+		this.favouriteListBase.setWidgetLeftRight(fi, 0, Unit.PX, 0, Unit.PX);
+		this.favouriteListBase.setWidgetTopHeight(fi, (this.favouriteListBase.getWidgetCount()-1)*40, Unit.PX, 40, Unit.PX);
+	}
+	
 	@Override
 	public void signinCustomer(CooksListViewWithCustomer response) {
 		if (null != response.getCustomer().getId()) {
@@ -399,10 +427,15 @@ public class LandingWidget extends ResizeComposite
 			this.customerAuthMsg.setVisible(false);
 			this.customerUsernameField.reset();
 			this.customerPasswordField.reset();
+			this.favouriteListBase.clear();
 			for (int i=0; i<this.cookListContent.getWidgetCount(); i++) {
 				CookWidget cookWidget = (CookWidget)this.cookListContent.getWidget(i);
 				cookWidget.likeButton.setVisible(true);
-				cookWidget.setLike(this.customer.getFavouriteCooksList().contains(cookWidget.cookView.getId()));
+				boolean like = this.customer.getFavouriteCooksList().contains(cookWidget.cookView.getId());
+				cookWidget.setLike(like);
+				if (like) {
+					this.createFavouriteItem(cookWidget.cookView);
+				}
 			}
 			this.status = STATUS.CUSTOMER;
 			this.switchButton.setText("\uf08b");
@@ -426,6 +459,9 @@ public class LandingWidget extends ResizeComposite
 				
 			});
 			this.favouriteBase.setVisible(true);
+			this.favouriteListBase.setVisible(true);
+			this.leftPanel.setWidgetLeftWidth(this.favouriteListBase, 50, Unit.PX, 200, Unit.PX);
+			
 		}else{
 			this.customerAuthMsg.setVisible(true);
 			this.customerAuthMsg.setText("Oops, shall we try again?");
@@ -447,10 +483,17 @@ public class LandingWidget extends ResizeComposite
 	public void updateCustomer(CooksListViewWithCustomer response) {
 		if (null != response.getCustomer().getId()) {
 			this.customer = response.getCustomer();
+			this.favouriteListBase.clear();
 			for (int i=0; i<this.cookListContent.getWidgetCount(); i++) {
 				CookWidget cookWidget = (CookWidget)this.cookListContent.getWidget(i);
 				cookWidget.likeButton.setVisible(true);
-				cookWidget.setLike(this.customer.getFavouriteCooksList().contains(cookWidget.cookView.getId()));
+				boolean like = this.customer.getFavouriteCooksList().contains(cookWidget.cookView.getId());
+				cookWidget.setLike(like);
+				if (like) {
+					if (like) {
+						this.createFavouriteItem(cookWidget.cookView);
+					}
+				}
 			}
 		}else{
 			this.customerAuthMsg.setVisible(true);
