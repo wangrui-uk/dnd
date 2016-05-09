@@ -3,6 +3,8 @@ package com.androidoven.client.components;
 import com.androidoven.transport.xsd.common.CookView;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
@@ -23,7 +25,8 @@ public class CookWidget extends ResizeComposite implements MouseOutHandler, Mous
 	}
 	private static CookWidgetUiBinder uiBinder = GWT.create(CookWidgetUiBinder.class);
 	private boolean up = false;
-	private CookView cookView = null;
+	private boolean like = false;
+	public CookView cookView = null;
 	@UiField
 	LayoutPanel frame;
 	@UiField
@@ -31,7 +34,7 @@ public class CookWidget extends ResizeComposite implements MouseOutHandler, Mous
 	@UiField
 	LayoutPanel cookHeader;
 	@UiField
-	Button likeButton;
+	public Button likeButton;
 	@UiField
 	Label cookIcon;
 	@UiField
@@ -64,6 +67,18 @@ public class CookWidget extends ResizeComposite implements MouseOutHandler, Mous
 
 		this.cookIcon.setText("\uf007");
 		this.likeButton.setText("\uf08a");
+		this.likeButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				like = !like;
+				if (like) {
+					likeButton.setText("\uf004");
+				}else{
+					likeButton.setText("\uf08a");
+				}
+			}
+		});
 
 		this.frame.addDomHandler(this, MouseOutEvent.getType());
 		this.frame.addDomHandler(this, MouseMoveEvent.getType());

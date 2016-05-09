@@ -10,6 +10,8 @@ import com.androidoven.client.resources.ThemeManager;
 import com.androidoven.client.screen.landing.presenter.LandingPresenter;
 import com.androidoven.client.screen.landing.view.LandingView;
 import com.androidoven.transport.xsd.common.CookView;
+import com.androidoven.transport.xsd.common.Customer;
+import com.androidoven.transport.xsd.customerservice.CooksListViewWithCustomer;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -68,6 +70,7 @@ public class LandingWidget extends ResizeComposite
 	private int cookViewLeft = 0;
 	private int cookBarLeft = 0;
 	private HandlerRegistration scrollEvent = null;
+	private HandlerRegistration maskEvent = null;
 	private int scrollX = -1;
 	private int cookBarW = 0;
 	@UiField
@@ -113,6 +116,7 @@ public class LandingWidget extends ResizeComposite
 	Button customerSigninBut;
 	@UiField
 	Label customerAuthMsg;
+	private Customer customer;
 	
 	public LandingWidget() {
 		this.initWidget(uiBinder.createAndBindUi(this));
@@ -279,12 +283,38 @@ public class LandingWidget extends ResizeComposite
 
 		});
 	}
+	
+	@Override
+	public void signinCustomer(CooksListViewWithCustomer response) {
+		if (null != response.getCustomer().getId()) {
+			this.customer = response.getCustomer();
+			this.customerAuthMsg.setVisible(false);
+			this.customerUsernameField.textbox.setText(null);
+			this.customerPasswordField.textbox.setText(null);
+			for (int i=0; i<this.cookListContent.getWidgetCount(); i++) {
+				CookWidget cookWidget = (CookWidget)this.cookListContent.getWidget(i);
+				cookWidget.likeButton.setVisible(true);
+				if (this.customer.getFavouriteCooksList().contains(cookWidget.cookView.getId())) {
+					cookWidget.likeButton.setText("\uf004");
+				}else{
+					cookWidget.likeButton.setText("\uf08a");
+				}
+			}
+		}else{
+			this.customerAuthMsg.setVisible(true);
+			this.customerAuthMsg.setText("Oops, shall we try again?");
+		}
+	}
 
 	@Override
 	public void onMouseUp(MouseUpEvent event) {
 		if (null != this.scrollEvent) {
 			this.scrollEvent.removeHandler();
 			this.scrollEvent = null;
+		}
+		if (null != this.maskEvent) {
+			this.maskEvent.removeHandler();
+			this.maskEvent = null;
 		}
 		this.scrollX = -1;
 	}
@@ -314,6 +344,10 @@ public class LandingWidget extends ResizeComposite
 				this.scrollEvent.removeHandler();
 				this.scrollEvent = null;
 			}
+			if (null != this.maskEvent) {
+				this.maskEvent.removeHandler();
+				this.maskEvent = null;
+			}
 			this.scrollX = -1;
 			break;
 		}
@@ -322,7 +356,7 @@ public class LandingWidget extends ResizeComposite
 
 	@Override
 	public void onMouseDown(MouseDownEvent event) {
-		Event.addNativePreviewHandler(new NativePreviewHandler() {
+		this.maskEvent = Event.addNativePreviewHandler(new NativePreviewHandler() {
 			@Override
 			public void onPreviewNativeEvent(NativePreviewEvent event) {
 				EventTarget target = event.getNativeEvent().getEventTarget();
@@ -334,5 +368,5 @@ public class LandingWidget extends ResizeComposite
 		this.scrollEvent = Event.addNativePreviewHandler(this);
 		this.scrollX = event.getScreenX();
 	}
-
+	
 }

@@ -7,7 +7,9 @@ import org.fusesource.restygwt.client.MethodCallback;
 import com.androidoven.client.screen.landing.presenter.LandingPresenter;
 import com.androidoven.client.screen.landing.service.CustomerService;
 import com.androidoven.client.screen.landing.view.LandingView;
+import com.androidoven.transport.xsd.common.Customer;
 import com.androidoven.transport.xsd.customerservice.CooksListView;
+import com.androidoven.transport.xsd.customerservice.CooksListViewWithCustomer;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 
@@ -32,6 +34,24 @@ public class LandingPresenterImpl implements LandingPresenter {
 			public void onFailure(Method method, Throwable exception) {
 				Window.alert("Fail to retrieve cooks list");
 			}
+			
+		});
+	}
+	
+	private void customerSignin(Customer customer) {
+		Defaults.setServiceRoot(GWT.getHostPageBaseURL()+"api");
+		CustomerService.I.signinCustomer(customer, new MethodCallback<CooksListViewWithCustomer>() {
+
+			@Override
+			public void onFailure(Method method, Throwable exception) {
+				Window.alert("Fail to signin");
+			}
+
+			@Override
+			public void onSuccess(Method method, CooksListViewWithCustomer response) {
+				display.signinCustomer(response);
+			}
+			
 		});
 	}
 
@@ -49,8 +69,10 @@ public class LandingPresenterImpl implements LandingPresenter {
 
 	@Override
 	public void onSigninCustomer(String user, String password) {
-		// TODO Auto-generated method stub
-		
+		Customer customer = new Customer();
+		customer.setId(user);
+		customer.setPassword(password);
+		this.customerSignin(customer);
 	}
 
 }
