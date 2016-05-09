@@ -2,3 +2,6 @@ dnd-build/target/
 dnd-client/target/
 dnd-server/target/
 dnd-transport/target/
+dnd-transport/src/main/generated/
+dnd-transport/src/main/java/com/androidoven/transport/xsd/
+dnd-transport/src/main/java/com/androidoven/transport/wadl/

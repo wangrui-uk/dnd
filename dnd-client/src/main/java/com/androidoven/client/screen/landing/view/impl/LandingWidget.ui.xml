@@ -136,16 +136,16 @@
 						<g:layer>
 							<g:LayoutPanel styleName="{style.customer_layout}">
 								<g:layer left="10px" right="10px" top="190px" height="60px">
-									<c:LabelledTextField ui:field="usernameField" />
+									<c:LabelledTextField ui:field="customerUsernameField" />
 								</g:layer>
 								<g:layer left="10px" right="10px" top="250px" height="60px">
-									<c:LabelledPasswordField ui:field="passwordField" />
+									<c:LabelledPasswordField ui:field="customerPasswordField" />
 								</g:layer>
 								<g:layer right="-10px" width="180px" top="350px" height="60px">
-									<g:Button ui:field="signinBut" styleName="{style.button} {style.text}" text="SIGN IN"/>
+									<g:Button ui:field="customerSigninBut" styleName="{style.button} {style.text}" text="SIGN IN"/>
 								</g:layer>
 								<g:layer left="0px" right="0px" top="410px" height="30px">
-									<g:Label ui:field="authMsg" text="Oops, shall we try again?" visible="false" styleName="{style.authMsg}"/>
+									<g:Label ui:field="customerAuthMsg" text="Oops, shall we try again?" visible="false" styleName="{style.authMsg}"/>
 								</g:layer>
 							</g:LayoutPanel>
 						</g:layer>

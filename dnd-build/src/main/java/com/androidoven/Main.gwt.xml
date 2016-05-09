@@ -8,7 +8,7 @@
 	<inherits name="com.google.gwt.i18n.I18N"/>
 	<inherits name="com.google.gwt.resources.Resources"/>
 	<inherits name="com.google.gwt.logging.Logging"/>
-<!-- 	<inherits name="com.androidoven.transport.DndTransport"/> -->
+	<inherits name="com.androidoven.DndTransport"/>
 	<inherits name="org.fusesource.restygwt.RestyGWT"/>
 	
 	<replace-with class="com.androidoven.client.factory.impl.ModuleFactoryImpl">

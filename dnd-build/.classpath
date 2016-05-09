@@ -35,5 +35,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
+	<classpathentry kind="src" path="/dnd-transport"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
